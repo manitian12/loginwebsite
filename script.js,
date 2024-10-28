@@ -1,1 +1,47 @@
+// script.js
+function sendOTP() {
+  const countryCode = document.getElementById('countryCode').value;
+  const phoneOrEmail = document.getElementById('phoneOrEmail').value;
+
+  fetch('/send-otp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ countryCode, phoneOrEmail })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      document.getElementById('otpSection').style.display = 'block';
+    } else {
+      showPopup("Failed to send OTP. Try again.");
+    }
+  });
+}
+
+function verifyOTP() {
+  const otp = document.getElementById('otp').value;
+
+  fetch('/verify-otp', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ otp })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      showPopup("Welcome!");
+    } else {
+      showPopup("Incorrect OTP. Please try again.");
+    }
+  });
+}
+
+function showPopup(message) {
+  document.getElementById('popupText').innerText = message;
+  document.getElementById('messagePopup').style.display = 'block';
+}
+
+function closePopup() {
+  document.getElementById('messagePopup').style.display = 'none';
+}
 
