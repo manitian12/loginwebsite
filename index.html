@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LOGIN</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <form id="loginForm">
+      <h2>Login</h2>
+      <label for="countryCode">Country Code:</label>
+      <input type="text" id="countryCode" name="countryCode" placeholder="+1" required>
+
+      <label for="phoneOrEmail">Phone Number or Email:</label>
+      <input type="text" id="phoneOrEmail" name="phoneOrEmail" required>
+
+      <button type="button" onclick="sendOTP()">Send OTP</button>
+    </form>
+    
+    <div id="otpSection" style="display: none;">
+      <label for="otp">Enter OTP:</label>
+      <input type="text" id="otp" name="otp" required>
+      <button type="button" onclick="verifyOTP()">Verify OTP</button>
+    </div>
+    
+    <div id="messagePopup" class="popup" style="display: none;">
+      <span id="popupText"></span>
+      <button onclick="closePopup()">Close</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
 
