@@ -1,40 +1,19 @@
-// app.js
-require('dotenv').config();
 const express = require('express');
-const bodyParser = require('body-parser');
+const path = require('path');
+require('dotenv').config();  // Loads environment variables from .env file
+
 const app = express();
-const PORT = process.env.PORT || 3000;
-const otpGenerator = require('otp-generator');
+const PORT = process.env.PORT || 10000;
 
-// Assuming use of Nodemailer or Twilio API for sending OTP
-const { sendOTPEmail, sendOTPSMS } = require('./otpService'); // Helper functions for sending OTPs
+// Tells the server to serve static files, like CSS and JavaScript, from the "public" folder
+app.use(express.static(path.join(__dirname, 'public')));
 
-let otpStore = {}; // Temporary storage for OTPs, for demonstration
-
-app.use(bodyParser.json());
-
-app.post('/send-otp', (req, res) => {
-  const { countryCode, phoneOrEmail } = req.body;
-  const otp = otpGenerator.generate(4, { digits: true });
-  otpStore[phoneOrEmail] = otp;
-
-  // Send OTP based on whether it's a phone number or email
-  const sendMethod = phoneOrEmail.includes('@') ? sendOTPEmail : sendOTPSMS;
-
-  sendMethod(countryCode, phoneOrEmail, otp)
-    .then(() => res.json({ success: true }))
-    .catch(() => res.json({ success: false }));
+// Defines the main route to show your homepage
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.post('/verify-otp', (req, res) => {
-  const { otp } = req.body;
-  if (otpStore[phoneOrEmail] === otp) {
-    delete otpStore[phoneOrEmail];
-    res.json({ success: true });
-  } else {
-    res.json({ success: false });
-  }
+// Starts the server on the specified port
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
-
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
-
